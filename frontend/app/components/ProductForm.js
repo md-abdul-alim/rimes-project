@@ -4,7 +4,14 @@ import * as Yup from 'yup';
 const ProductForm = ({ onSubmit, initialValues }) => {
   const validationSchema = Yup.object({
     name: Yup.string().required('Product name is required'),
-    price: Yup.number().positive('Price must be positive').required('Price is required'),
+    price: Yup.number()
+      .positive('Price must be positive')
+      .test(
+        'is-decimal',
+        'Price must have at most 2 decimal places',
+        (value) => /^\d+(\.\d{1,2})?$/.test(value)
+      )
+      .required('Price is required'),
   });
 
   return (
@@ -12,6 +19,7 @@ const ProductForm = ({ onSubmit, initialValues }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      enableReinitialize // Allows form to update when initialValues change
     >
       {({ isSubmitting }) => (
         <Form className="flex flex-col gap-4 p-4">

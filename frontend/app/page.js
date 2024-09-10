@@ -21,17 +21,17 @@ export default function Home() {
   }, []);
 
   const fetchProducts = async () => {
-    const response = await axios.get('http://127.0.0.1:8000/api/products');
+    const response = await axios.get('http://127.0.0.1:8000/api/products/');
     setProducts(response.data);
   };
 
   const handleSubmit = async (values, { resetForm }) => {
     if (currentProduct.id) {
       // Update product
-      await axios.put(`/api/products/${currentProduct.id}`, values);
+      await axios.put(`http://127.0.0.1:8000/api/products/${currentProduct.id}/`, values);
     } else {
       // Add new product
-      await axios.post('/api/products', values);
+      await axios.post('http://127.0.0.1:8000/api/products/', values);
     }
     fetchProducts();
     resetForm();
@@ -43,7 +43,7 @@ export default function Home() {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`/api/products/${id}`);
+    await axios.delete(`http://127.0.0.1:8000/api/products/${id}/`);
     fetchProducts();
   };
 
